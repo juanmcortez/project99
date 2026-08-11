@@ -161,6 +161,32 @@ class ProfilePhoneTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_storing_phone_with_same_type_as_soft_deleted_restores_it(): void
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $demographic = DemographicService::createFor($user, $this->validDemographicData());
+        $phone = PhoneService::createFor($demographic, $this->validPhoneData());
+        PhoneService::delete($phone);
+
+        $response = $this->actingAs($user)->post(route('profile.phone.store'), [
+            'phone_number' => '+13105559876',
+            'type' => 'mobile',
+        ]);
+
+        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertSessionHas('status', 'phone-saved');
+
+        $this->assertDatabaseHas('phones', [
+            'id' => $phone->id,
+            'phone_number' => '+13105559876',
+            'type' => 'mobile',
+            'deleted_at' => null,
+        ]);
+    }
+
     public function test_validation_rejects_invalid_e164_phone_number(): void
     {
         $validator = Validator::make([
