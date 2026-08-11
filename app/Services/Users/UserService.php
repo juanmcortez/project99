@@ -3,6 +3,7 @@
 namespace App\Services\Users;
 
 use App\Models\Users\User;
+use App\Services\Demographics\DemographicService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 
@@ -41,5 +42,14 @@ class UserService
         }
 
         return $user->fresh();
+    }
+
+    public static function delete(User $user): void
+    {
+        if ($user->demographic !== null) {
+            DemographicService::delete($user->demographic);
+        }
+
+        $user->delete();
     }
 }
