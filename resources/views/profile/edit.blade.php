@@ -15,6 +15,9 @@
                 <a href="#password" data-tab-target="password" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
                     Password
                 </a>
+                <a href="#demographics" data-tab-target="demographics" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    Demographics
+                </a>
                 <a href="#two-factor" data-tab-target="two-factor" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
                     Two-factor
                 </a>
@@ -24,6 +27,7 @@
         <div class="p-6">
             @include('profile.partials.profile-tab')
             @include('profile.partials.password-tab')
+            @include('profile.partials.demographics-tab')
             @include('profile.partials.two-factor-tab')
         </div>
     </div>
