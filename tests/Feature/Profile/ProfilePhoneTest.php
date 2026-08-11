@@ -3,6 +3,7 @@
 namespace Tests\Feature\Profile;
 
 use App\Http\Requests\Phones\StorePhoneRequest;
+use App\Models\Phones\Phone;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
 use App\Services\Phones\PhoneService;
@@ -94,9 +95,10 @@ class ProfilePhoneTest extends TestCase
         $response->assertRedirect(route('profile.edit').'#demographics');
         $response->assertSessionHas('status', 'phone-deleted');
 
-        $this->assertDatabaseMissing('phones', [
+        $this->assertSoftDeleted('phones', [
             'id' => $phone->id,
         ]);
+        $this->assertNull(Phone::query()->find($phone->id));
     }
 
     public function test_storing_phone_without_demographic_returns_error(): void
@@ -157,6 +159,32 @@ class ProfilePhoneTest extends TestCase
         ]);
 
         $response->assertForbidden();
+    }
+
+    public function test_storing_phone_with_same_type_as_soft_deleted_restores_it(): void
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $demographic = DemographicService::createFor($user, $this->validDemographicData());
+        $phone = PhoneService::createFor($demographic, $this->validPhoneData());
+        PhoneService::delete($phone);
+
+        $response = $this->actingAs($user)->post(route('profile.phone.store'), [
+            'phone_number' => '+13105559876',
+            'type' => 'mobile',
+        ]);
+
+        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertSessionHas('status', 'phone-saved');
+
+        $this->assertDatabaseHas('phones', [
+            'id' => $phone->id,
+            'phone_number' => '+13105559876',
+            'type' => 'mobile',
+            'deleted_at' => null,
+        ]);
     }
 
     public function test_validation_rejects_invalid_e164_phone_number(): void

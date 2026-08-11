@@ -4,6 +4,7 @@ namespace App\Services\Demographics;
 
 use App\Exceptions\DemographicAlreadyExistsException;
 use App\Models\Demographics\Demographic;
+use App\Models\Phones\Phone;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -34,6 +35,13 @@ class DemographicService
         $demographic->update($attributes);
 
         return $demographic->fresh();
+    }
+
+    public static function delete(Demographic $demographic): void
+    {
+        $demographic->address()?->delete();
+        $demographic->phones()->each(fn (Phone $phone) => $phone->delete());
+        $demographic->delete();
     }
 
     /**

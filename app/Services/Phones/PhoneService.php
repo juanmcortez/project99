@@ -13,6 +13,18 @@ class PhoneService
      */
     public static function createFor(Demographic $demographic, array $data): Phone
     {
+        $trashed = $demographic->phones()
+            ->withTrashed()
+            ->where('type', $data['type'])
+            ->first();
+
+        if ($trashed !== null) {
+            $trashed->restore();
+            $trashed->update(['phone_number' => $data['phone_number']]);
+
+            return $trashed->fresh();
+        }
+
         if ($demographic->phones()->count() >= 2) {
             throw new PhoneLimitReachedException;
         }

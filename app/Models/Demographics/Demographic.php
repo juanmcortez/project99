@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
     'first_name',
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Demographic extends Model
 {
     /** @use HasFactory<DemographicFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function demographicable(): MorphTo
     {
