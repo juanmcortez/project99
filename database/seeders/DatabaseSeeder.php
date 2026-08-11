@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Addresses\AddressSeeder;
 use Database\Seeders\Demographics\DemographicSeeder;
 use Database\Seeders\Users\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             DemographicSeeder::class,
+            AddressSeeder::class,
         ]);
     }
 }

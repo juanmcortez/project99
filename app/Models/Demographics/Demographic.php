@@ -2,10 +2,12 @@
 
 namespace App\Models\Demographics;
 
+use App\Models\Addresses\Address;
 use Database\Factories\Demographics\DemographicFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[Fillable([
@@ -33,6 +35,11 @@ class Demographic extends Model
     public function demographicable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class);
     }
 
     /**
