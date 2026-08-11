@@ -3,10 +3,12 @@
 namespace App\Models\Demographics;
 
 use App\Models\Addresses\Address;
+use App\Models\Phones\Phone;
 use Database\Factories\Demographics\DemographicFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -40,6 +42,11 @@ class Demographic extends Model
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);
+    }
+
+    public function phones(): HasMany
+    {
+        return $this->hasMany(Phone::class);
     }
 
     /**
