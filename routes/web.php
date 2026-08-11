@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Profiles\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,5 +11,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::view('/profile', 'profile.edit')->name('profile.edit');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/demographic', [ProfileController::class, 'storeDemographic'])->name('profile.demographic.store');
+    Route::put('/profile/demographic', [ProfileController::class, 'updateDemographic'])->name('profile.demographic.update');
 });
