@@ -4,12 +4,12 @@ namespace Tests\Feature\Profile;
 
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class ProfileDemographicTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, string>
@@ -25,9 +25,7 @@ class ProfileDemographicTest extends TestCase
 
     public function test_profile_page_loads_for_verified_user(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('profile.edit'));
 
@@ -38,9 +36,7 @@ class ProfileDemographicTest extends TestCase
 
     public function test_verified_user_can_store_demographic_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.demographic.store'), $this->validDemographicData());
 
@@ -57,9 +53,7 @@ class ProfileDemographicTest extends TestCase
 
     public function test_verified_user_can_update_demographic_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         DemographicService::createFor($user, $this->validDemographicData());
 

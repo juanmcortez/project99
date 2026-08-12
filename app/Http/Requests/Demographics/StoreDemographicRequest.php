@@ -37,7 +37,7 @@ class StoreDemographicRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'birthdate' => ['required', 'date', 'before:today'],
-            'profile_picture' => ['nullable', 'image', 'max:2048'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'social_security' => ['nullable', 'string', 'max:11'],
             'gender' => ['nullable', Rule::enum(Gender::class)],
             'race' => ['nullable', Rule::enum(Race::class)],

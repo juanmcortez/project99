@@ -8,12 +8,12 @@ use App\Services\Addresses\AddressService;
 use App\Services\Demographics\DemographicService;
 use App\Services\Phones\PhoneService;
 use App\Services\Users\UserService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class UserSoftDeleteTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, string>

@@ -39,7 +39,7 @@ class DemographicService
 
     public static function delete(Demographic $demographic): void
     {
-        $demographic->address()?->delete();
+        $demographic->address?->delete();
         $demographic->phones()->each(fn (Phone $phone) => $phone->delete());
         $demographic->delete();
     }

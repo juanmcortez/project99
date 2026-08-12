@@ -7,13 +7,13 @@ use App\Models\Phones\Phone;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
 use App\Services\Phones\PhoneService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
 class ProfilePhoneTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, string>
@@ -40,9 +40,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_verified_user_can_store_phone_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         DemographicService::createFor($user, $this->validDemographicData());
 
@@ -59,9 +57,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_verified_user_can_update_phone_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $demographic = DemographicService::createFor($user, $this->validDemographicData());
         $phone = PhoneService::createFor($demographic, $this->validPhoneData());
@@ -83,9 +79,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_verified_user_can_delete_phone_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $demographic = DemographicService::createFor($user, $this->validDemographicData());
         $phone = PhoneService::createFor($demographic, $this->validPhoneData());
@@ -103,9 +97,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_storing_phone_without_demographic_returns_error(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.phone.store'), $this->validPhoneData());
 
@@ -115,9 +107,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_storing_third_phone_returns_error(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $demographic = DemographicService::createFor($user, $this->validDemographicData());
 
@@ -142,13 +132,9 @@ class ProfilePhoneTest extends TestCase
 
     public function test_user_cannot_update_another_users_phone(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
-        $otherUser = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $otherUser = User::factory()->create();
 
         $demographic = DemographicService::createFor($otherUser, $this->validDemographicData());
         $phone = PhoneService::createFor($demographic, $this->validPhoneData());
@@ -163,9 +149,7 @@ class ProfilePhoneTest extends TestCase
 
     public function test_storing_phone_with_same_type_as_soft_deleted_restores_it(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $demographic = DemographicService::createFor($user, $this->validDemographicData());
         $phone = PhoneService::createFor($demographic, $this->validPhoneData());

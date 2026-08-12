@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Contracts\Debug\ShouldntReport;
 
-class AddressAlreadyExistsException extends Exception
+class AddressAlreadyExistsException extends Exception implements ShouldntReport
 {
     public function __construct()
     {

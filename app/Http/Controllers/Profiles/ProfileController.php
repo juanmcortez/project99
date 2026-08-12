@@ -176,7 +176,7 @@ class ProfileController extends Controller
         $demographic = $phone->demographic;
 
         return $demographic !== null
-            && $demographic->demographicable_type === User::class
+            && $demographic->demographicable_type === $user->getMorphClass()
             && $demographic->demographicable_id === $user->id;
     }
 }

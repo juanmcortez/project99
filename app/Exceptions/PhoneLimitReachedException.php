@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Contracts\Debug\ShouldntReport;
 
-class PhoneLimitReachedException extends Exception
+class PhoneLimitReachedException extends Exception implements ShouldntReport
 {
     public function __construct()
     {

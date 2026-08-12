@@ -4,14 +4,14 @@ namespace Tests\Feature\Users;
 
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Models\Users\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class UserValidationTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, mixed>
