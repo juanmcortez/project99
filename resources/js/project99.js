@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const showTab = (id) => {
-        const activeId = id || 'profile';
+        const activeId = id || 'user';
 
         panels.forEach((panel) => {
             panel.classList.toggle('hidden', panel.dataset.tabPanel !== activeId);
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const initialTab = window.location.hash.replace('#', '') || 'profile';
+    const initialTab = window.location.hash.replace('#', '') || 'user';
     showTab(initialTab);
 
     tabs.forEach((tab) => {
@@ -36,6 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('hashchange', () => {
-        showTab(window.location.hash.replace('#', '') || 'profile');
+        showTab(window.location.hash.replace('#', '') || 'user');
     });
 });
