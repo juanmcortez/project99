@@ -48,7 +48,7 @@ class ProfilePhoneTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('profile.phone.store'), $this->validPhoneData());
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-contact');
         $response->assertSessionHas('status', 'phone-saved');
 
         $this->assertDatabaseHas('phones', [
@@ -71,7 +71,7 @@ class ProfilePhoneTest extends TestCase
             'type' => 'work',
         ]);
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-contact');
         $response->assertSessionHas('status', 'phone-saved');
 
         $this->assertDatabaseHas('phones', [
@@ -92,7 +92,7 @@ class ProfilePhoneTest extends TestCase
 
         $response = $this->actingAs($user)->delete(route('profile.phone.destroy', $phone));
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-contact');
         $response->assertSessionHas('status', 'phone-deleted');
 
         $this->assertSoftDeleted('phones', [
@@ -109,7 +109,7 @@ class ProfilePhoneTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('profile.phone.store'), $this->validPhoneData());
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-details');
         $response->assertSessionHasErrors('phone', null, 'updateDemographic');
     }
 
@@ -136,7 +136,7 @@ class ProfilePhoneTest extends TestCase
             'type' => 'home',
         ]);
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-contact');
         $response->assertSessionHasErrors('phone', null, 'updateDemographic');
     }
 
@@ -176,7 +176,7 @@ class ProfilePhoneTest extends TestCase
             'type' => 'mobile',
         ]);
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-contact');
         $response->assertSessionHas('status', 'phone-saved');
 
         $this->assertDatabaseHas('phones', [

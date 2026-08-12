@@ -9,26 +9,30 @@
 
         <div class="border-b border-gray-200 px-6">
             <nav class="-mb-px flex gap-6" aria-label="Profile tabs">
-                <a href="#profile" data-tab-target="profile" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Profile
+                <a href="#user" data-tab-target="user" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    User
                 </a>
-                <a href="#password" data-tab-target="password" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Password
+                <a href="#user-details" data-tab-target="user-details" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    User details
                 </a>
-                <a href="#demographics" data-tab-target="demographics" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Demographics
+                <a href="#user-location" data-tab-target="user-location" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    User location
                 </a>
-                <a href="#two-factor" data-tab-target="two-factor" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                    Two-factor
+                <a href="#user-contact" data-tab-target="user-contact" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    User contact
+                </a>
+                <a href="#security" data-tab-target="security" class="tab-link border-b-2 border-transparent py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                    Security
                 </a>
             </nav>
         </div>
 
         <div class="p-6">
-            @include('profile.partials.profile-tab')
-            @include('profile.partials.password-tab')
-            @include('profile.partials.demographics-tab')
-            @include('profile.partials.two-factor-tab')
+            @include('profile.partials.user-tab')
+            @include('profile.partials.user-details-tab')
+            @include('profile.partials.user-location-tab')
+            @include('profile.partials.user-contact-tab')
+            @include('profile.partials.security-tab')
         </div>
     </div>
 @endsection
