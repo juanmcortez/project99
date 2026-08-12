@@ -17,6 +17,8 @@ class RoleAndPermissionSeeder extends Seeder
         'users.manage',
         'roles.manage',
         'permissions.manage',
+        'edit.profile.username',
+        'edit.profile.email'
     ];
 
     public function run(): void
@@ -34,6 +36,7 @@ class RoleAndPermissionSeeder extends Seeder
         $superadminRole = Role::findOrCreate('superadmin');
 
         $adminRole->syncPermissions([
+            'edit.profile.email',
             'activity-log.view',
             'users.manage',
         ]);
