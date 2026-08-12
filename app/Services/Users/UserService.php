@@ -67,4 +67,20 @@ class UserService
 
         $user->delete();
     }
+
+    public static function updateRole(User $user, string $role): User
+    {
+        $user->syncRoles([$role]);
+
+        ActivityLogService::log(
+            ActivityLogAction::UserRoleUpdated,
+            'User role updated',
+            [
+                'user_id' => $user->getKey(),
+                'role' => $role,
+            ]
+        );
+
+        return $user->fresh();
+    }
 }
