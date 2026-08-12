@@ -18,7 +18,7 @@ class RoleAndPermissionSeeder extends Seeder
         'roles.manage',
         'permissions.manage',
         'edit.profile.username',
-        'edit.profile.email'
+        'edit.profile.email',
     ];
 
     public function run(): void
