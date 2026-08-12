@@ -264,4 +264,26 @@ class ActivityLogTest extends TestCase
             'action' => ActivityLogAction::UserAccountDeleted->value,
         ]);
     }
+
+    public function test_username_is_shown_in_datatables_response_after_user_is_soft_deleted(): void
+    {
+        $viewer = User::factory()->create();
+        $deleted = User::factory()->create(['username' => 'deleteduser']);
+
+        ActivityLog::create([
+            'user_id' => $deleted->id,
+            'action' => ActivityLogAction::UserLogin,
+            'description' => 'User logged in',
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'PHPUnit',
+            'created_at' => now(),
+        ]);
+
+        $deleted->delete();
+
+        $response = $this->actingAs($viewer)->getJson(route('activity-log.data'));
+
+        $response->assertOk();
+        $response->assertJsonFragment(['username' => 'deleteduser']);
+    }
 }
