@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Addresses;
 
+use App\Enums\Country;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAddressRequest extends FormRequest
 {
@@ -30,7 +32,7 @@ class StoreAddressRequest extends FormRequest
             'city' => ['required', 'string', 'max:128'],
             'state' => ['required', 'string', 'max:128'],
             'zip_code' => ['required', 'string', 'max:20'],
-            'country' => ['required', 'string', 'size:2'],
+            'country' => ['required', Rule::enum(Country::class)],
         ];
     }
 }
