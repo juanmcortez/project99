@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::preventLazyLoading(! app()->isProduction());
+
+        Gate::before(fn (?User $user) => $user?->hasRole('superadmin') ? true : null);
 
         // Override Fortify's verification.verify route to allow unauthenticated access.
         // Registering here (before FortifyServiceProvider::boot) ensures this route
