@@ -18,8 +18,7 @@
                 <x-text-input id="profile_username" name="username" type="text" class="mt-1" :value="old('username', auth()->user()->username)" required autocomplete="username" />
                 <x-input-error for="username" />
                 @else
-                <p class="text-gray-500 pt-3 pl-3">{{ auth()->user()->username }}</p>
-                <x-input-error for="username" name="username" type="hidden" readonly value="{{ auth()->user()->username }}" />
+                <p class="pt-3 pl-3 text-gray-500">{{ auth()->user()->username }}</p>
                 @endcan
             </div>
 
@@ -29,7 +28,7 @@
                 <x-text-input id="profile_email" name="email" type="email" class="mt-1" :value="old('email', auth()->user()->email)" required autocomplete="email" />
                 <x-input-error for="email" />
                 @else
-                <p class="text-gray-500 pt-3 pl-3">{{ auth()->user()->email }}</p>
+                <p class="mt-1 text-sm text-gray-500">{{ auth()->user()->email }}</p>
                 @endcan
             </div>
         </div>
