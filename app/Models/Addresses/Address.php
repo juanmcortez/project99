@@ -29,6 +29,21 @@ class Address extends Model
         return $this->belongsTo(Demographic::class);
     }
 
+    public function getFormattedAttribute(): string
+    {
+        $cityState = trim(implode(', ', array_filter([$this->city, $this->state])));
+        $cityStateZip = trim($cityState.($this->zip_code ? ' '.$this->zip_code : ''));
+
+        $lines = array_filter([
+            $this->street_line_1,
+            $this->street_line_2,
+            $cityStateZip !== '' ? $cityStateZip : null,
+            $this->country?->label(),
+        ]);
+
+        return implode("\n", $lines);
+    }
+
     /**
      * @return array<string, string>
      */
