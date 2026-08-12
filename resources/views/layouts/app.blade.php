@@ -20,7 +20,18 @@
                 <div class="flex items-center gap-4 text-sm">
                     <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="{{ route('profile.edit') }}" class="text-gray-600 hover:text-gray-900">Profile</a>
-                    <a href="{{ route('activity-log.index') }}" class="text-gray-600 hover:text-gray-900">Activity Log</a>
+                    @can('activity-log.view')
+                        <a href="{{ route('activity-log.index') }}" class="text-gray-600 hover:text-gray-900">Activity Log</a>
+                    @endcan
+                    @can('users.manage')
+                        <a href="{{ route('admin.users.index') }}" class="text-gray-600 hover:text-gray-900">Users</a>
+                    @endcan
+                    @can('roles.manage')
+                        <a href="{{ route('admin.roles.index') }}" class="text-gray-600 hover:text-gray-900">Roles</a>
+                    @endcan
+                    @can('permissions.manage')
+                        <a href="{{ route('admin.permissions.index') }}" class="text-gray-600 hover:text-gray-900">Permissions</a>
+                    @endcan
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="text-gray-600 hover:text-gray-900">Log out</button>
