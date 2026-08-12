@@ -17,6 +17,6 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@project99.com',
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ])->assignRole('superadmin');
     }
 }
