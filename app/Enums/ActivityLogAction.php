@@ -17,6 +17,7 @@ enum ActivityLogAction: string
     case PhoneCreated = 'phone_created';
     case PhoneUpdated = 'phone_updated';
     case PhoneDeleted = 'phone_deleted';
+    case UserRoleUpdated = 'user_role_updated';
 
     public function label(): string
     {
@@ -34,6 +35,7 @@ enum ActivityLogAction: string
             self::PhoneCreated => 'Phone created',
             self::PhoneUpdated => 'Phone updated',
             self::PhoneDeleted => 'Phone deleted',
+            self::UserRoleUpdated => 'User role updated',
         };
     }
 }

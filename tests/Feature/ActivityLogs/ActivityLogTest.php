@@ -6,6 +6,7 @@ use App\Enums\ActivityLogAction;
 use App\Models\ActivityLogs\ActivityLog;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
+use Database\Seeders\Roles\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,20 @@ use Tests\TestCase;
 class ActivityLogTest extends TestCase
 {
     use LazilyRefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RoleAndPermissionSeeder::class);
+    }
+
+    private function actingAsWithActivityLogAccess(User $user): self
+    {
+        $user->assignRole('superadmin');
+
+        return $this->actingAs($user);
+    }
 
     /**
      * @return array<string, string>
@@ -221,7 +236,7 @@ class ActivityLogTest extends TestCase
             'created_at' => now(),
         ]);
 
-        $response = $this->actingAs($user)->getJson(route('activity-log.data'));
+        $response = $this->actingAsWithActivityLogAccess($user)->getJson(route('activity-log.data'));
 
         $response->assertOk();
         $response->assertJsonStructure([
@@ -244,7 +259,7 @@ class ActivityLogTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('activity-log.index'));
+        $response = $this->actingAsWithActivityLogAccess($user)->get(route('activity-log.index'));
 
         $response->assertOk();
         $response->assertSee('Activity Log');
@@ -263,5 +278,27 @@ class ActivityLogTest extends TestCase
             'user_id' => $user->id,
             'action' => ActivityLogAction::UserAccountDeleted->value,
         ]);
+    }
+
+    public function test_username_is_shown_in_datatables_response_after_user_is_soft_deleted(): void
+    {
+        $viewer = User::factory()->create();
+        $deleted = User::factory()->create(['username' => 'deleteduser']);
+
+        ActivityLog::create([
+            'user_id' => $deleted->id,
+            'action' => ActivityLogAction::UserLogin,
+            'description' => 'User logged in',
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'PHPUnit',
+            'created_at' => now(),
+        ]);
+
+        $deleted->delete();
+
+        $response = $this->actingAsWithActivityLogAccess($viewer)->getJson(route('activity-log.data'));
+
+        $response->assertOk();
+        $response->assertJsonFragment(['username' => 'deleteduser']);
     }
 }

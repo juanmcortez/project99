@@ -22,6 +22,6 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, (new StoreUserRequest)->rules())->validate();
 
-        return UserService::create($input);
+        return UserService::create($input)->assignRole('user');
     }
 }
