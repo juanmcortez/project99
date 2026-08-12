@@ -32,7 +32,8 @@ class ProfileDemographicTest extends TestCase
         $response = $this->actingAs($user)->get(route('profile.edit'));
 
         $response->assertOk();
-        $response->assertSee('Demographics');
+        $response->assertSee('User details');
+        $response->assertSee('Security');
     }
 
     public function test_verified_user_can_store_demographic_via_profile(): void
@@ -43,7 +44,7 @@ class ProfileDemographicTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('profile.demographic.store'), $this->validDemographicData());
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-details');
         $response->assertSessionHas('status', 'demographic-saved');
 
         $this->assertDatabaseHas('demographics', [
@@ -68,7 +69,7 @@ class ProfileDemographicTest extends TestCase
             'birthdate' => '1985-06-20',
         ]);
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-details');
         $response->assertSessionHas('status', 'demographic-saved');
 
         $user->load('demographic');

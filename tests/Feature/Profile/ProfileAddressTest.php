@@ -49,7 +49,7 @@ class ProfileAddressTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('profile.address.store'), $this->validAddressData());
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-location');
         $response->assertSessionHas('status', 'address-saved');
 
         $this->assertDatabaseHas('addresses', [
@@ -77,7 +77,7 @@ class ProfileAddressTest extends TestCase
             'country' => 'US',
         ]);
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-location');
         $response->assertSessionHas('status', 'address-saved');
 
         $user->load('demographic.address');
@@ -92,7 +92,7 @@ class ProfileAddressTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('profile.address.store'), $this->validAddressData());
 
-        $response->assertRedirect(route('profile.edit').'#demographics');
+        $response->assertRedirect(route('profile.edit').'#user-details');
         $response->assertSessionHasErrors('address', null, 'updateDemographic');
     }
 
