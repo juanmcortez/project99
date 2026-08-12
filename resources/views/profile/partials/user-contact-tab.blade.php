@@ -35,7 +35,7 @@
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <x-input-label for="phone_type_{{ $phone->id }}" value="Type" />
-                        <x-text-input id="phone_type_{{ $phone->id }}" name="type" type="text" class="mt-1" :value="old('type', $phone->type)" required />
+                        <x-select-input id="phone_type_{{ $phone->id }}" name="type" class="mt-1" :options="\App\Enums\PhoneType::cases()" :selected="old('type', $phone->type?->value)" required />
                         @error('type', 'updateDemographic')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -84,7 +84,7 @@
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <x-input-label for="new_phone_type" value="Type" />
-                        <x-text-input id="new_phone_type" name="type" type="text" class="mt-1" :value="old('type')" placeholder="mobile" required />
+                        <x-select-input id="new_phone_type" name="type" class="mt-1" :options="\App\Enums\PhoneType::cases()" :selected="old('type')" required />
                         @error('type', 'updateDemographic')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror

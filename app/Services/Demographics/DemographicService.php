@@ -2,9 +2,11 @@
 
 namespace App\Services\Demographics;
 
+use App\Enums\ActivityLogAction;
 use App\Exceptions\DemographicAlreadyExistsException;
 use App\Models\Demographics\Demographic;
 use App\Models\Phones\Phone;
+use App\Services\ActivityLogs\ActivityLogService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +24,15 @@ class DemographicService
 
         $attributes = self::prepareAttributes($data);
 
-        return $parent->demographic()->create($attributes);
+        $demographic = $parent->demographic()->create($attributes);
+
+        ActivityLogService::log(
+            ActivityLogAction::DemographicCreated,
+            'Demographic information created',
+            ['demographic_id' => $demographic->getKey()]
+        );
+
+        return $demographic;
     }
 
     /**
@@ -30,16 +40,32 @@ class DemographicService
      */
     public static function update(Demographic $demographic, array $data): Demographic
     {
+        $profilePictureUploaded = isset($data['profile_picture']) && $data['profile_picture'] instanceof UploadedFile;
+
         $attributes = self::prepareAttributes($data, $demographic);
 
         $demographic->update($attributes);
+
+        ActivityLogService::log(
+            ActivityLogAction::DemographicUpdated,
+            'Demographic information updated',
+            ['demographic_id' => $demographic->getKey()]
+        );
+
+        if ($profilePictureUploaded) {
+            ActivityLogService::log(
+                ActivityLogAction::ProfilePictureUpdated,
+                'Profile picture updated',
+                ['demographic_id' => $demographic->getKey()]
+            );
+        }
 
         return $demographic->fresh();
     }
 
     public static function delete(Demographic $demographic): void
     {
-        $demographic->address()?->delete();
+        $demographic->address?->delete();
         $demographic->phones()->each(fn (Phone $phone) => $phone->delete());
         $demographic->delete();
     }

@@ -2,9 +2,11 @@
 
 namespace App\Services\Phones;
 
+use App\Enums\ActivityLogAction;
 use App\Exceptions\PhoneLimitReachedException;
 use App\Models\Demographics\Demographic;
 use App\Models\Phones\Phone;
+use App\Services\ActivityLogs\ActivityLogService;
 
 class PhoneService
 {
@@ -22,14 +24,30 @@ class PhoneService
             $trashed->restore();
             $trashed->update(['phone_number' => $data['phone_number']]);
 
-            return $trashed->fresh();
+            $phone = $trashed->fresh();
+
+            ActivityLogService::log(
+                ActivityLogAction::PhoneCreated,
+                'Phone created',
+                ['phone_id' => $phone->getKey()]
+            );
+
+            return $phone;
         }
 
         if ($demographic->phones()->count() >= 2) {
             throw new PhoneLimitReachedException;
         }
 
-        return $demographic->phones()->create($data);
+        $phone = $demographic->phones()->create($data);
+
+        ActivityLogService::log(
+            ActivityLogAction::PhoneCreated,
+            'Phone created',
+            ['phone_id' => $phone->getKey()]
+        );
+
+        return $phone;
     }
 
     /**
@@ -39,11 +57,23 @@ class PhoneService
     {
         $phone->update($data);
 
+        ActivityLogService::log(
+            ActivityLogAction::PhoneUpdated,
+            'Phone updated',
+            ['phone_id' => $phone->getKey()]
+        );
+
         return $phone->fresh();
     }
 
     public static function delete(Phone $phone): void
     {
+        ActivityLogService::log(
+            ActivityLogAction::PhoneDeleted,
+            'Phone deleted',
+            ['phone_id' => $phone->getKey()]
+        );
+
         $phone->delete();
     }
 }

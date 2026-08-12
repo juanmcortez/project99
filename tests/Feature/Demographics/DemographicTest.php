@@ -6,14 +6,14 @@ use App\Exceptions\DemographicAlreadyExistsException;
 use App\Http\Requests\Demographics\StoreDemographicRequest;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
 class DemographicTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, mixed>

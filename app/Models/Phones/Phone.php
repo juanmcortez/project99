@@ -2,6 +2,7 @@
 
 namespace App\Models\Phones;
 
+use App\Enums\PhoneType;
 use App\Models\Demographics\Demographic;
 use Database\Factories\Phones\PhoneFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -22,5 +23,15 @@ class Phone extends Model
     public function demographic(): BelongsTo
     {
         return $this->belongsTo(Demographic::class);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => PhoneType::class,
+        ];
     }
 }

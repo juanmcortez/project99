@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogs\ActivityLogController;
 use App\Http\Controllers\Profiles\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/phone', [ProfileController::class, 'storePhone'])->name('profile.phone.store');
     Route::put('/profile/phone/{phone}', [ProfileController::class, 'updatePhone'])->name('profile.phone.update');
     Route::delete('/profile/phone/{phone}', [ProfileController::class, 'destroyPhone'])->name('profile.phone.destroy');
+
+    Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log.index');
+    Route::get('/activity-log/data', [ActivityLogController::class, 'data'])->name('activity-log.data');
 });

@@ -3,19 +3,17 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\Users\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
 class TwoFactorAuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     public function test_user_can_enable_and_confirm_two_factor_authentication(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])

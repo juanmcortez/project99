@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Addresses;
 
+use App\Enums\Country;
 use App\Models\Addresses\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,7 @@ class AddressFactory extends Factory
             'city' => fake()->city(),
             'state' => fake()->state(),
             'zip_code' => fake()->postcode(),
-            'country' => 'US',
+            'country' => Country::US->value,
         ];
     }
 }

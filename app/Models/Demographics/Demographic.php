@@ -2,6 +2,13 @@
 
 namespace App\Models\Demographics;
 
+use App\Enums\EducationLevel;
+use App\Enums\EmploymentStatus;
+use App\Enums\Ethnicity;
+use App\Enums\Gender;
+use App\Enums\Language;
+use App\Enums\MaritalStatus;
+use App\Enums\Race;
 use App\Models\Addresses\Address;
 use App\Models\Phones\Phone;
 use Database\Factories\Demographics\DemographicFactory;
@@ -59,6 +66,13 @@ class Demographic extends Model
             'birthdate' => 'date',
             'social_security' => 'encrypted',
             'income' => 'decimal:2',
+            'gender' => Gender::class,
+            'race' => Race::class,
+            'ethnicity' => Ethnicity::class,
+            'language' => Language::class,
+            'marital_status' => MaritalStatus::class,
+            'education_level' => EducationLevel::class,
+            'employment_status' => EmploymentStatus::class,
         ];
     }
 }

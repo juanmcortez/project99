@@ -5,13 +5,13 @@ namespace Tests\Feature\Profile;
 use App\Http\Requests\Addresses\StoreAddressRequest;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
 class ProfileAddressTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     /**
      * @return array<string, string>
@@ -41,9 +41,7 @@ class ProfileAddressTest extends TestCase
 
     public function test_verified_user_can_store_address_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         DemographicService::createFor($user, $this->validDemographicData());
 
@@ -61,9 +59,7 @@ class ProfileAddressTest extends TestCase
 
     public function test_verified_user_can_update_address_via_profile(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         DemographicService::createFor($user, $this->validDemographicData());
 
@@ -86,9 +82,7 @@ class ProfileAddressTest extends TestCase
 
     public function test_storing_address_without_demographic_returns_error(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.address.store'), $this->validAddressData());
 

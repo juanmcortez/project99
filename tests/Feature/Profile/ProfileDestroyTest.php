@@ -3,18 +3,16 @@
 namespace Tests\Feature\Profile;
 
 use App\Models\Users\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class ProfileDestroyTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     public function test_verified_user_can_delete_account_with_correct_password(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.destroy'), [
             'password' => 'password',
@@ -36,9 +34,7 @@ class ProfileDestroyTest extends TestCase
 
     public function test_delete_account_rejects_incorrect_password(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.destroy'), [
             'password' => 'wrong-password',
@@ -52,9 +48,7 @@ class ProfileDestroyTest extends TestCase
 
     public function test_delete_account_requires_password(): void
     {
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(route('profile.destroy'), []);
 

@@ -2,7 +2,9 @@
 
 namespace App\Services\Users;
 
+use App\Enums\ActivityLogAction;
 use App\Models\Users\User;
+use App\Services\ActivityLogs\ActivityLogService;
 use App\Services\Demographics\DemographicService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
@@ -41,6 +43,12 @@ class UserService
             ])->save();
         }
 
+        ActivityLogService::log(
+            ActivityLogAction::UserProfileUpdated,
+            'User profile updated',
+            ['user_id' => $user->getKey()]
+        );
+
         return $user->fresh();
     }
 
@@ -49,6 +57,13 @@ class UserService
         if ($user->demographic !== null) {
             DemographicService::delete($user->demographic);
         }
+
+        ActivityLogService::log(
+            ActivityLogAction::UserAccountDeleted,
+            'User account deleted',
+            ['user_id' => $user->getKey()],
+            $user->getKey()
+        );
 
         $user->delete();
     }

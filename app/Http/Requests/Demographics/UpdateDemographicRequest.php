@@ -2,8 +2,16 @@
 
 namespace App\Http\Requests\Demographics;
 
+use App\Enums\EducationLevel;
+use App\Enums\EmploymentStatus;
+use App\Enums\Ethnicity;
+use App\Enums\Gender;
+use App\Enums\Language;
+use App\Enums\MaritalStatus;
+use App\Enums\Race;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDemographicRequest extends FormRequest
 {
@@ -29,15 +37,15 @@ class UpdateDemographicRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'birthdate' => ['required', 'date', 'before:today'],
-            'profile_picture' => ['nullable', 'image', 'max:2048'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'social_security' => ['nullable', 'string', 'max:11'],
-            'gender' => ['nullable', 'string', 'max:64'],
-            'race' => ['nullable', 'string', 'max:64'],
-            'ethnicity' => ['nullable', 'string', 'max:64'],
-            'language' => ['nullable', 'string', 'max:64'],
-            'marital_status' => ['nullable', 'string', 'max:64'],
-            'education_level' => ['nullable', 'string', 'max:64'],
-            'employment_status' => ['nullable', 'string', 'max:64'],
+            'gender' => ['nullable', Rule::enum(Gender::class)],
+            'race' => ['nullable', Rule::enum(Race::class)],
+            'ethnicity' => ['nullable', Rule::enum(Ethnicity::class)],
+            'language' => ['nullable', Rule::enum(Language::class)],
+            'marital_status' => ['nullable', Rule::enum(MaritalStatus::class)],
+            'education_level' => ['nullable', Rule::enum(EducationLevel::class)],
+            'employment_status' => ['nullable', Rule::enum(EmploymentStatus::class)],
             'occupation' => ['nullable', 'string', 'max:255'],
             'income' => ['nullable', 'numeric', 'min:0'],
         ];

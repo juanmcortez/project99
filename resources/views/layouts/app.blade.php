@@ -8,6 +8,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         @vite(['resources/css/project99.css', 'resources/js/project99.js'])
+        @stack('styles')
     </head>
     <body class="bg-gray-50 font-sans text-gray-900 antialiased">
         <nav class="border-b border-gray-200 bg-white">
@@ -19,6 +20,7 @@
                 <div class="flex items-center gap-4 text-sm">
                     <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="{{ route('profile.edit') }}" class="text-gray-600 hover:text-gray-900">Profile</a>
+                    <a href="{{ route('activity-log.index') }}" class="text-gray-600 hover:text-gray-900">Activity Log</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="text-gray-600 hover:text-gray-900">Log out</button>
@@ -30,5 +32,6 @@
         <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
             @yield('content')
         </main>
+        @stack('scripts')
     </body>
 </html>

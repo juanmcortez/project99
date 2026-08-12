@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Phones;
 
+use App\Enums\PhoneType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePhoneRequest extends FormRequest
 {
@@ -26,7 +28,7 @@ class UpdatePhoneRequest extends FormRequest
     {
         return [
             'phone_number' => ['required', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
-            'type' => ['required', 'string', 'max:50'],
+            'type' => ['required', Rule::enum(PhoneType::class)],
         ];
     }
 }

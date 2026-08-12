@@ -2,6 +2,7 @@
 
 namespace App\Models\Addresses;
 
+use App\Enums\Country;
 use App\Models\Demographics\Demographic;
 use Database\Factories\Addresses\AddressFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -26,5 +27,15 @@ class Address extends Model
     public function demographic(): BelongsTo
     {
         return $this->belongsTo(Demographic::class);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'country' => Country::class,
+        ];
     }
 }
