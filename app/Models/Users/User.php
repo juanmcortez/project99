@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['username', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use HasDemographic, HasFactory, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
+    use HasDemographic, HasFactory, HasRoles, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
