@@ -24,23 +24,32 @@ class UserService
     }
 
     /**
-     * @param  array{username: string, email: string}  $data
+     * @param  array{username?: string, email?: string}  $data
      */
     public static function updateProfile(User $user, array $data): User
     {
-        if ($data['email'] !== $user->email && $user instanceof MustVerifyEmail) {
-            $user->forceFill([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'email_verified_at' => null,
-            ])->save();
+        $attributes = [];
 
+        if (array_key_exists('username', $data)) {
+            $attributes['username'] = $data['username'];
+        }
+
+        if (array_key_exists('email', $data)) {
+            $attributes['email'] = $data['email'];
+        }
+
+        $emailChanging = array_key_exists('email', $attributes)
+            && $attributes['email'] !== $user->email
+            && $user instanceof MustVerifyEmail;
+
+        if ($emailChanging) {
+            $attributes['email_verified_at'] = null;
+        }
+
+        $user->forceFill($attributes)->save();
+
+        if ($emailChanging) {
             $user->sendEmailVerificationNotification();
-        } else {
-            $user->forceFill([
-                'username' => $data['username'],
-                'email' => $data['email'],
-            ])->save();
         }
 
         ActivityLogService::log(

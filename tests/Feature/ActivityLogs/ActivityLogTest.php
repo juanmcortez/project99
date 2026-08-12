@@ -114,6 +114,7 @@ class ActivityLogTest extends TestCase
     public function test_profile_update_is_logged(): void
     {
         $user = User::factory()->create();
+        $user->givePermissionTo(['edit.profile.username', 'edit.profile.email']);
 
         $this->actingAs($user)->put(route('user-profile-information.update'), [
             'username' => 'updateduser',

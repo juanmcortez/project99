@@ -4,6 +4,10 @@ import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
 import fs from 'node:fs';
 
+const certificateKeyPath = './docker/certificates/local-key.pem';
+const certificateCertPath = './docker/certificates/local-cert.pem';
+const hasLocalCertificates = fs.existsSync(certificateKeyPath) && fs.existsSync(certificateCertPath);
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -21,12 +25,14 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         strictPort: true,
-        https: {
-            key: fs.readFileSync('./docker/certificates/local-key.pem'),
-            cert: fs.readFileSync('./docker/certificates/local-cert.pem'),
-        },
-        hmr: {
-            host: 'project99.local',
-        },
+        ...(hasLocalCertificates ? {
+            https: {
+                key: fs.readFileSync(certificateKeyPath),
+                cert: fs.readFileSync(certificateCertPath),
+            },
+            hmr: {
+                host: 'project99.local',
+            },
+        } : {}),
     },
 });

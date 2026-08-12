@@ -2,10 +2,10 @@
 
 namespace App\Actions\Fortify;
 
+use App\Http\Requests\Users\UpdateProfileInformationRequest;
 use App\Models\Users\User;
 use App\Services\Users\UserService;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
@@ -20,11 +20,15 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'username' => ['required', 'string', 'max:128', Rule::unique('users', 'username')->ignore($user)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user)],
-        ])->validateWithBag('updateProfileInformation');
+        $profileRequest = app(UpdateProfileInformationRequest::class);
 
-        UserService::updateProfile($user, $input);
+        if (! $profileRequest->authorize()) {
+            abort(403);
+        }
+
+        $validated = Validator::make($input, $profileRequest->rules())
+            ->validateWithBag('updateProfileInformation');
+
+        UserService::updateProfile($user, $validated);
     }
 }
