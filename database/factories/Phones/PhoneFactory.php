@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Phones;
 
+use App\Enums\PhoneType;
 use App\Models\Phones\Phone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,11 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PhoneFactory extends Factory
 {
     /**
-     * @var list<string>
-     */
-    private const TYPES = ['mobile', 'home', 'work', 'fax', 'emergency'];
-
-    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
@@ -24,7 +20,7 @@ class PhoneFactory extends Factory
     {
         return [
             'phone_number' => '+1'.fake()->numerify('##########'),
-            'type' => fake()->randomElement(self::TYPES),
+            'type' => fake()->randomElement(PhoneType::cases())->value,
         ];
     }
 }
