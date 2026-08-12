@@ -68,8 +68,8 @@
                 </div>
 
                 <div>
-                    <x-input-label for="country" value="Country (ISO code)" />
-                    <x-text-input id="country" name="country" type="text" maxlength="2" class="mt-1 uppercase" :value="old('country', $address?->country)" placeholder="US" required />
+                    <x-input-label for="country" value="Country" />
+                    <x-select-input id="country" name="country" class="mt-1" :options="\App\Enums\Country::cases()" :selected="old('country', $address?->country?->value)" required />
                     @error('country', 'updateDemographic')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror

@@ -106,7 +106,7 @@
 
             <div>
                 <x-input-label for="gender" value="Gender" />
-                <x-text-input id="gender" name="gender" type="text" class="mt-1" :value="old('gender', $demographic?->gender)" />
+                <x-select-input id="gender" name="gender" class="mt-1" :options="\App\Enums\Gender::cases()" :selected="old('gender', $demographic?->gender?->value)" />
                 @error('gender', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -114,7 +114,7 @@
 
             <div>
                 <x-input-label for="race" value="Race" />
-                <x-text-input id="race" name="race" type="text" class="mt-1" :value="old('race', $demographic?->race)" />
+                <x-select-input id="race" name="race" class="mt-1" :options="\App\Enums\Race::cases()" :selected="old('race', $demographic?->race?->value)" />
                 @error('race', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -122,7 +122,7 @@
 
             <div>
                 <x-input-label for="ethnicity" value="Ethnicity" />
-                <x-text-input id="ethnicity" name="ethnicity" type="text" class="mt-1" :value="old('ethnicity', $demographic?->ethnicity)" />
+                <x-select-input id="ethnicity" name="ethnicity" class="mt-1" :options="\App\Enums\Ethnicity::cases()" :selected="old('ethnicity', $demographic?->ethnicity?->value)" />
                 @error('ethnicity', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -130,7 +130,7 @@
 
             <div>
                 <x-input-label for="language" value="Language" />
-                <x-text-input id="language" name="language" type="text" class="mt-1" :value="old('language', $demographic?->language)" />
+                <x-select-input id="language" name="language" class="mt-1" :options="\App\Enums\Language::cases()" :selected="old('language', $demographic?->language?->value)" />
                 @error('language', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -138,7 +138,7 @@
 
             <div>
                 <x-input-label for="marital_status" value="Marital status" />
-                <x-text-input id="marital_status" name="marital_status" type="text" class="mt-1" :value="old('marital_status', $demographic?->marital_status)" />
+                <x-select-input id="marital_status" name="marital_status" class="mt-1" :options="\App\Enums\MaritalStatus::cases()" :selected="old('marital_status', $demographic?->marital_status?->value)" />
                 @error('marital_status', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -146,7 +146,7 @@
 
             <div>
                 <x-input-label for="education_level" value="Education level" />
-                <x-text-input id="education_level" name="education_level" type="text" class="mt-1" :value="old('education_level', $demographic?->education_level)" />
+                <x-select-input id="education_level" name="education_level" class="mt-1" :options="\App\Enums\EducationLevel::cases()" :selected="old('education_level', $demographic?->education_level?->value)" />
                 @error('education_level', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -154,7 +154,7 @@
 
             <div>
                 <x-input-label for="employment_status" value="Employment status" />
-                <x-text-input id="employment_status" name="employment_status" type="text" class="mt-1" :value="old('employment_status', $demographic?->employment_status)" />
+                <x-select-input id="employment_status" name="employment_status" class="mt-1" :options="\App\Enums\EmploymentStatus::cases()" :selected="old('employment_status', $demographic?->employment_status?->value)" />
                 @error('employment_status', 'updateDemographic')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
