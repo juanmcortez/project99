@@ -38,6 +38,26 @@ class DemographicTest extends TestCase
         $this->assertTrue($user->demographic->is($demographic));
     }
 
+    public function test_full_name_combines_available_name_parts(): void
+    {
+        $user = User::factory()->create();
+
+        $demographic = DemographicService::createFor($user, array_merge($this->validDemographicData(), [
+            'middle_name' => 'Marie',
+        ]));
+
+        $this->assertSame('Jane Marie Doe', $demographic->full_name);
+    }
+
+    public function test_full_name_omits_missing_middle_name(): void
+    {
+        $user = User::factory()->create();
+
+        $demographic = DemographicService::createFor($user, $this->validDemographicData());
+
+        $this->assertSame('Jane Doe', $demographic->full_name);
+    }
+
     public function test_validation_rejects_missing_mandatory_fields(): void
     {
         $validator = Validator::make([], (new StoreDemographicRequest)->rules());

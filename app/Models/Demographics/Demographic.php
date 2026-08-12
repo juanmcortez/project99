@@ -57,6 +57,15 @@ class Demographic extends Model
         return $this->hasMany(Phone::class);
     }
 
+    public function getFullNameAttribute(): string
+    {
+        return trim(implode(' ', array_filter([
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name,
+        ])));
+    }
+
     /**
      * @return array<string, string>
      */

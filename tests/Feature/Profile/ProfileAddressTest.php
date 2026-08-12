@@ -3,6 +3,7 @@
 namespace Tests\Feature\Profile;
 
 use App\Http\Requests\Addresses\StoreAddressRequest;
+use App\Models\Addresses\Address;
 use App\Models\Users\User;
 use App\Services\Demographics\DemographicService;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -114,5 +115,22 @@ class ProfileAddressTest extends TestCase
         $this->assertArrayHasKey('state', $validator->errors()->toArray());
         $this->assertArrayHasKey('zip_code', $validator->errors()->toArray());
         $this->assertArrayHasKey('country', $validator->errors()->toArray());
+    }
+
+    public function test_address_formatted_attribute_combines_address_lines(): void
+    {
+        $address = Address::factory()->make([
+            'street_line_1' => '123 Main St',
+            'street_line_2' => 'Apt 4',
+            'city' => 'Springfield',
+            'state' => 'IL',
+            'zip_code' => '62701',
+            'country' => 'US',
+        ]);
+
+        $this->assertSame(
+            "123 Main St\nApt 4\nSpringfield, IL 62701\nUnited States",
+            $address->formatted
+        );
     }
 }
