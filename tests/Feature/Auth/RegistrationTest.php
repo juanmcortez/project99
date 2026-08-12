@@ -3,12 +3,20 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\Users\User;
+use Database\Seeders\Roles\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
     use LazilyRefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(RoleAndPermissionSeeder::class);
+    }
 
     public function test_user_can_register(): void
     {
