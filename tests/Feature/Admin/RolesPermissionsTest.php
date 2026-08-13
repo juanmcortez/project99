@@ -226,4 +226,37 @@ class RolesPermissionsTest extends TestCase
             'action' => ActivityLogAction::UserRoleUpdated->value,
         ]);
     }
+
+    public function test_admin_cannot_escalate_user_to_superadmin(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $target = User::factory()->create();
+        $target->assignRole('user');
+
+        $this->actingAs($admin)->put(route('admin.users.update-role', $target), [
+            'role' => 'superadmin',
+        ])->assertSessionHasErrors('role');
+
+        $target->refresh();
+        $this->assertFalse($target->hasRole('superadmin'));
+        $this->assertTrue($target->hasRole('user'));
+    }
+
+    public function test_superadmin_can_assign_superadmin_role(): void
+    {
+        $superadmin = User::factory()->create();
+        $superadmin->assignRole('superadmin');
+
+        $target = User::factory()->create();
+        $target->assignRole('user');
+
+        $this->actingAs($superadmin)->put(route('admin.users.update-role', $target), [
+            'role' => 'superadmin',
+        ])->assertRedirect(route('admin.users.index'));
+
+        $target->refresh();
+        $this->assertTrue($target->hasRole('superadmin'));
+    }
 }

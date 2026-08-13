@@ -35,7 +35,8 @@ class UserController extends Controller
 
                 foreach ($roles as $role) {
                     $selected = $currentRole === $role ? 'selected' : '';
-                    $options .= "<option value=\"{$role}\" {$selected}>{$role}</option>";
+                    $escapedRole = e($role);
+                    $options .= "<option value=\"{$escapedRole}\" {$selected}>{$escapedRole}</option>";
                 }
 
                 return view('admin.users.partials.role-form', [
